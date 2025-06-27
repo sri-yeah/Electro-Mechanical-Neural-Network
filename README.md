@@ -119,6 +119,96 @@ User → Touch Display (Raspberry Pi GUI)
 
 ---
 
+# 🌀 Arduino Multi-Servo Controller
+
+The Arduino part is designed to control 8 servos using serial commands. It supports two operation modes: **positioning (WEIGHT)** and **pulse override (OVERRIDE)**. It communicates with external devices via `Serial1` (receiving commands) and `Serial2` (sending predefined sequences).
+
+## 📦 Features
+
+- Supports up to **8 servos**, each with **5 preset logical positions**
+- Handles serial command input with a **circular buffer**
+- Two modes:
+  - `WEIGHT` mode: rotate servo to target position
+  - `OVERRIDE` mode: send a short directional pulse
+- Dynamic servo attach/detach to reduce jitter and power usage
+- Optional UART-triggered command sequence (`Serial2`)
+- Built-in direction inversion for specific servo IDs
+
+---
+
+## 🔧 Hardware Setup
+
+| Component       | Details                         |
+|----------------|----------------------------------|
+| Board          | Arduino with multiple Serial ports |
+| Servo Pins     | Digital pins 2–9                |
+| Trigger Pin    | Digital pin 11 (input)          |
+| UART           | Serial1 (command in), Serial2 (sequence out) |
+
+Servos 0, 1, 4, and 7 are direction-inverted by default.
+
+---
+
+## 📐 Command Format
+
+Each command is 7 bits:
+
+[0-2] Servo Address (3 bits)
+
+[3-5] Value Code (3 bits)
+
+[6] Override Flag (1 bit)
+
+
+Examples:
+
+- `0001000`: Servo 0, move to position index 4, no override
+- `0110011`: Servo 3, direction code 1 (CCW), with override
+
+---
+
+## 🔁 Modes Explained
+
+### 1. WEIGHT Mode
+
+- Triggered when override bit is `0`
+- Interprets valueCode as a **target index (0–4)**
+- Calculates time based on distance moved
+- Rotates in proper direction and stops after duration
+
+### 2. OVERRIDE Mode
+
+- Triggered when override bit is `1`
+- Interprets valueCode as **direction**
+  - `100`: clockwise
+  - `010`: stop
+  - `001`: counter-clockwise
+- Moves for a fixed 50 ms pulse, then stops
+
+---
+
+## ⏱ Timing and Direction
+
+- `ROTATION_TIME_UNIT = 1100 ms` per position step
+- `PWM_CW = 80`, `PWM_STOP = 90`, `PWM_CCW = 100`
+- Additional time offsets can be specified per servo (`servoExtraSpin[]`)
+
+---
+
+## 🧪 Trigger Sequence (Serial2)
+
+When pin 11 transitions from LOW to HIGH, a predefined sequence is sent over `Serial2`:
+
+```text
+0000000
+0010000
+0100000
+...
+1110000
+```
+
+---
+
 ## 🔭 Future Work
 
 - Higher-precision weight control with better motors
