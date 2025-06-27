@@ -30,6 +30,8 @@ This is built via 3d printer and incorporate levers, which represent the neurons
 
 The Electro-Mechanical Neural Network (EMNN) is a 2–2–1 multilayer perceptron (MLP) built using physical components. It allows users to explore how neural networks process information by converting computational structures into tangible, mechanical motion.
 
+![Hardware Setup](EMNN1.jpg)
+
 ---
 
 ## 2. Specifications & Architecture
