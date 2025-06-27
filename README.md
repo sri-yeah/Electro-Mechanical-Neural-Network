@@ -247,14 +247,27 @@ Examples:
 
 ---
 
+---
+
 ## 11. Meeting Records & Rationales
 
-*This section is a placeholder for project documentation:*
+Throughout the project, we held **weekly meetings** at the end of each week to discuss progress, share design updates, and help unblock each other when facing technical or conceptual challenges. These meetings were crucial for early detection of bottlenecks and collaborative ideation, especially during integration-heavy stages. We also kept each other updated throughout the week in our group chat, for milestones achieved for motivation and to share proud achievements. 
 
-* Key decisions made during development
-* Design trade-offs and discussion outcomes
-* Weekly goals and integration notes
-* Hardware/software bottlenecks and how they were resolved
+| Week  | Key Progress |
+|-------|--------------|
+| Week 3 | **Frame made**: Completed initial construction of the frame using T-slot structural frame to define the neuron layout geometry. Initial dimensioning and spatial validation were performed to ensure mechanical feasibility for servo integration and interconnect routing. |
+| Week 4 | **Neuron prototype**: Fabricated the first mechanical Neuron unit, focusing on evaluating material suitability and hinge actuation range. <br> **GUI design prototype**: Developed an initial GUI wireframe to establish layout, interaction flow, and design consistency for Raspberry Pi touchscreen control. |
+| Week 5 | **Neuron prototype**: Iteratively improved the prototype for improved structural integrity and actuation smoothness based on early testing feedback. <br> **Chatbot prototype**: Built a lightweight chatbot interface using Python for user-driven interaction, to explain the workings of the network via speaker. <br> **Weights parser template complete**: Designed and implemented a template parser to convert logical equations into numerical weight arrays. |
+| Week 6 | **Neuron final design**: Finalised geometry and mounting strategy for all Neuron units, incorporating alignment tolerances and assembly repeatability. <br> **GUI + Chatbot prototype**: Connected the initial GUI front-end to the chatbot logic pipeline to verify real-time interactivity and data flow prior to hardware integration. |
+| Week 7 | **GUI + Chatbot integration with weights parser**: Linked the software stack into a continuous pipeline—GUI → chatbot → parser—to simulate full input-to-actuation data flow. <br> **Servo control for motors template on Arduino**: Developed a modular control framework on Arduino to accept incoming values and execute PWM-based servo control to enable single-weight testing. <br> **Servo control for all motors**: Mounted and wired all servos onto final neuron hardware; validated coordinated response and mechanical independence under test sequences. |
+| Week 8 | **GUI redesign to final design**: Refined the UI for robustness, clarity and ergonomics. <br> **GUI + Chatbot + Weights parser on Raspi**: Deployed the integrated GUI, chatbot, and parser modules to the Raspberry Pi with local execution and event-driven logic. <br> **UART receiver first iteration on Arduino**: Implemented and tested a basic UART decoder on Arduino to parse incoming weight data and queue motor commands. <br> **UART transmitter first iteration and integration with display.py on Raspi**: Wrote UART-transmit logic within the GUI pipeline on Raspberry Pi, coupling chatbot output to hardware signals via display.py. |
+| Week 9 | **UART transmitter + receiver synchronisation to final design**: Established reliable, deterministic serial communication between Raspberry Pi and Arduino with fully aligned timing and protocol handling. <br> **Weights parser template and motor controller template synchronised to final design, aligned with physical layout + wiring + physical timing requirements**: Finalised structure and synchronised data packet logic to match actual Neuron layout, cable routing, and servo feedback characteristics. <br> **Touch display, Raspi and Arduino mounted to frame**: Fully assembled and enclosed all electronic subsystems on the physical frame, with functional wiring, signal isolation, and secured modules for final testing and demos. |
+
+Each weekly sync included:
+- **Design rationale reviews**: Justification of chosen methods and hardware  
+- **Debugging support**: Peer assistance in diagnosing mechanical/electrical issues  
+- **Alignment on goals**: Ensured software and hardware tracks remained in sync  
+- **Future planning**: Set priorities for the upcoming week’s sprint
 
 ---
 
