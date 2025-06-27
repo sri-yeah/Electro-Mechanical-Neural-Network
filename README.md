@@ -60,9 +60,9 @@ The Electro-Mechanical Neural Network (EMNN) is a 2–2–1 multilayer perceptro
 
 | Material              | Purpose                                                                                       |
 |----------------------|-----------------------------------------------------------------------------------------------|
-| **Acrylic (3D-printed parts)** | Used for levers and movable elements. Lightweight to allow activation without affecting prior layers. |
-| **Structural frame** | Provides rigidity to hold all layers and pulleys. Designed to resist tension and maintain alignment. |
-| **Fishing wire**     | Serves as neuron-to-neuron connectors. Thin for compact routing, but strong enough for load-bearing. |
+| **PLA (3D-printed parts)** | Used for levers and movable elements. Lightweight to allow activation without affecting prior layers. |
+| **T-Slot Structural Frame** | Provides rigidity to hold all layers and pulleys while being easy to work with for a potentially modular design. Designed to resist tension and maintain alignment. |
+| **Fishing Wire**     | Serves as neuron-to-neuron connectors. Thin for compact routing, but strong enough for load-bearing. |
 
 ---
 
