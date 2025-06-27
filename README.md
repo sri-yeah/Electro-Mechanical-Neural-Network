@@ -119,7 +119,7 @@ User → Touch Display (Raspberry Pi GUI)
 
 ---
 
-🔭 Future Work
+## 🔭 Future Work
 
 - Higher-precision weight control with better motors
 - Larger scale for better control and visualisation
@@ -127,7 +127,8 @@ User → Touch Display (Raspberry Pi GUI)
 
 ---
 
-👨‍🔬 Team
+## 👨‍🔬 Team
+
 We are seven third-year EEE/EIE students at Imperial College London, in collaboration with IBM:
 
 - Sriyesh Bogadapati
