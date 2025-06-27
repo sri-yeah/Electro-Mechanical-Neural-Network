@@ -241,7 +241,7 @@ Examples:
 | ------------------------------------- | -------------------------------------------------------------------- |
 | Physical system instead of simulation | Boosts engagement, makes learning interactive                        |
 | Time-based motor control              | Avoids complexity of encoders, keeps cost low                        |
-| Acrylic parts                         | Lightweight enough for neuron levers without interfering with motion |
+| PLA parts                         | Lightweight enough for neuron levers without interfering with motion |
 | DoReLU function                       | Compatible with physical constraints, yet supports non-linearity     |
 | Two-layer MLP                         | Minimal yet expressive enough to model all 2-input logic functions   |
 
