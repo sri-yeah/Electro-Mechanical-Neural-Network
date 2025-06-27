@@ -1,4 +1,5 @@
-# Electro-Mechanical-Neural-Network (EMNN)
+
+# Electro-Mechanical Neural Network (EMNN)
 
 The fundamentals of AI can be extremely difficult to understand, particularly the concept of Neural Networks and machine learning. 
 
@@ -8,122 +9,105 @@ This is built via 3d printer and incorporate levers, which represent the neurons
 
 ---
 
-## 🧠 Project Summary
+## 📁 Contents
 
-- **Model Architecture:** 2–2–1 MLP with ReLU activation and a bias term in the input layer 
-- **Components:** Levers (neurons), strings (weights), pulleys (weighted summation), motors (weight updates)  
-- **Interactive Interface:** Touchscreen GUI + chatbot 
-- **Main Control:** Raspberry Pi 5 + Arduino Due via UART 
-- **Educational Focus:** Logic computation and forward propagation, physically observable  
-
----
-
-## ⚙️ How It Works
-
-### 🔗 Pulley System: Calculating the Weighted Sum
-
-Each neuron’s input is calculated using a **two-stage pulley mechanism**. Strings connected to hidden-layer levers transmit forces into the output layer:
-
-- The levers move vertically, pulling strings attached to pulleys.
-- These pulleys reduce the force linearly (typically by ¼) and combine multiple inputs into a **single effective movement**.
-- The result: A mechanical analogue of a **weighted sum**.
-
-The final movement determines whether the output lever activates, corresponding to the neuron firing.
-
-### 🔁 Motor Mechanism: Adjusting the Weights
-
-Each string passes through a **motorized clamp** that adjusts its tension, representing different weights:
-
-- Weights range from **-1 to 1**, with discrete steps due to mechanical resolution.
-- The position of the clamp along the lever determines the torque applied (weight × input).
-- Adjusting this position modifies how much influence a neuron has on the next.
-
-### 🔌 Motor Control via Arduino Due
-
-- The **Arduino Due** is the central motor controller.
-- It stores the **current state** of weights and receives **target states** via UART from the Pi.
-- For each motor:
-  - Determines the **required direction** (clockwise or counterclockwise).
-  - Activates the motor for a calibrated **time duration** based on the required movement.
-- All logic is managed via a **state machine** on the Arduino.
+- [1. Project Overview](#1-project-overview)
+- [2. Specifications & Architecture](#2-specifications--architecture)
+- [3. Materials ](#3-materials-used)
+- [4. Pulley & Lever Computation](#4-pulley--lever-computation)
+- [5. Motor Weight Adjustment](#5-motor-weight-adjustment)
+- [6. Embedded Control System](#6-embedded-control-system)
+- [7. Arduino Multi-Servo Controller](#7-arduino-multi-servo-controller)
+- [8. User Interface & Software Stack](#8-user-interface--software-stack)
+- [9. Logic Function Modelling](#9-logic-function-modelling)
+- [10. Design Decisions](#10-design-decisions)
+- [11. Meeting Records & Rationales](#11-meeting-records--rationales)
+- [12. Future Improvements](#12-future-improvements)
 
 ---
 
-## 🧑‍💻 User Interface & Interaction
+## 1. Project Overview
 
-Users interact with the EMNN through a **touchscreen interface** and **chatbot assistant**, powered by the Raspberry Pi 5.
-
-### 👆 `display.py` (Main Script)
-
-- Provides a **chatbot-style GUI** where users enter logic expressions (e.g. `A XOR B`).
-- After hitting "Enter", the system:
-  1. **Parses and simplifies** the logic expression.
-  2. **Identifies** one of 16 possible 2-input logic functions.
-  3. **Selects the corresponding weight preset**.
-
-### 🧠 `weights_parser.py`
-
-- Reduces user input into one of 16 Boolean functions.
-- Maps each function to a **predefined dictionary of weights**.
-
-### 🧭 UART Communication via `uart_comm.py`
-
-- Sends target weights to the Arduino over **UART**.
-- Arduino performs necessary motor movements to reach the desired weight configuration.
+The Electro-Mechanical Neural Network (EMNN) is a 2–2–1 multilayer perceptron (MLP) built using physical components. It allows users to explore how neural networks process information by converting computational structures into tangible, mechanical motion.
 
 ---
 
-## 🔢 Activation Function: DoReLU
+## 2. Specifications & Architecture
 
-We use a simplified version of ReLU, called **Double Rectified Linear Unit (DoReLU)**:
+**Neural Model**  
+- Type: Multilayer Perceptron (MLP)  
+- Layers: 2 input neurons (+1 bias), 2 hidden neurons, 1 output neuron  
+- Activation Function: Double Rectified Linear Unit (DoReLU)  
+- Weight Resolution: 5 discrete levels in range [-1, 1]  
 
-- Inputs/outputs constrained to the [0, 1] range  
-- Weights constrained between -1 and 1  
-- Still enables **non-linearity**, essential for logic modelling and learning  
+**Mechanical**  
+- Motion Type: Vertical displacement via lever rotation  
+- Weighted Sum: Achieved through two-stage pulley network  
+- Output Activation: Based on threshold displacement of output lever  
 
----
+**Control**  
+- Controller: Arduino Due  
+- Motor Control: Via state machine based on input weight preset  
+- Communication: UART protocol between Raspberry Pi 5 and Arduino Due  
 
-## 🧠 Logic Modelling Capabilities
-
-With two binary inputs, the EMNN supports all **16 possible 2-input Boolean functions**. 
-
-- Each input combination (`00`, `01`, `10`, `11`) maps to either `0` or `1`.
-- Boolean algebra simplification is applied.
-- The system loads one of the 16 **preset weight configurations** accordingly.
-
-Examples include:
-
-- AND
-- OR
-- NAND
-- XOR
-- NOR
-- Constant TRUE/FALSE
+**Interface**  
+- GUI + Chatbot: Python (Touchscreen input)  
+- Scripts: `display.py`, `weights_parser.py`, `uart_comm.py`
 
 ---
 
-## 📈 Project Architecture
+## 3. Materials 
 
-- **Mechanical Layer:** Levers, pulleys, and strings to model neuron connections  
-- **Electrical Layer:** Servo motors controlled via Arduino for weight adjustment  
-- **Digital Layer:** Raspberry Pi for GUI, logic processing, and UART communication  
-
-### Architecture Overview
-```text
-User → Touch Display (Raspberry Pi GUI)
-     → display.py → weights_parser.py + uart_comm.py
-     → Arduino Due (motor control logic)
-     → Motors move → Strings pull → Pulleys sum → Levers activate
-     → Physical neuron fires
-```
+| Material              | Purpose                                                                                       |
+|----------------------|-----------------------------------------------------------------------------------------------|
+| **Acrylic (3D-printed parts)** | Used for levers and movable elements. Lightweight to allow activation without affecting prior layers. |
+| **Structural frame** | Provides rigidity to hold all layers and pulleys. Designed to resist tension and maintain alignment. |
+| **Fishing wire**     | Serves as neuron-to-neuron connectors. Thin for compact routing, but strong enough for load-bearing. |
 
 ---
 
-# 🌀 Arduino Multi-Servo Controller
+## 4. Pulley & Lever Computation
+
+Each output neuron receives signals via a **pulley array** from four hidden-layer connections:
+
+- Levers transmit vertical force based on input activation.
+- Force is transferred via strings to a **two-stage pulley system**, reducing movement to ¼ and summing the total effect.
+- The output lever activates when summed tension passes a threshold, mimicking neural firing.
+
+---
+
+## 5. Motor Weight Adjustment
+
+Each string passes through a **motorised clamp**, with its position determining the applied weight:
+
+- **Range:** -1 to 1, represented by 5 fixed motor positions  
+- **Control:** Servo rotates clamp to change torque applied by the neuron input  
+- **Effect:** Adjusts string length and thus weight influence on the connected lever
+
+---
+
+## 6. Embedded Control System
+
+**Arduino Due:**
+- Manages current state of each motor
+- Receives updated target weights from Raspberry Pi
+- Uses a **finite state machine** to:
+  - Determine rotation direction
+  - Execute time-based position changes
+  - Store updated weight position state
+
+**Communication Protocol:**
+- UART (Serial1): Raspberry Pi → Arduino Due
+- Command-based interface (7-bit messages)
+- Directional motor control with fallback override mode
+
+---
+
+# 7. Arduino Multi-Servo Controller
 
 The Arduino part is designed to control 8 servos using serial commands. It supports two operation modes: **positioning (WEIGHT)** and **pulse override (OVERRIDE)**. It communicates with external devices via `Serial1` (receiving commands) and `Serial2` (sending predefined sequences).
 
-## 📦 Features
+## Features
 
 - Supports up to **8 servos**, each with **5 preset logical positions**
 - Handles serial command input with a **circular buffer**
@@ -136,7 +120,7 @@ The Arduino part is designed to control 8 servos using serial commands. It suppo
 
 ---
 
-## 🔧 Hardware Setup
+## Hardware Setup
 
 | Component       | Details                         |
 |----------------|----------------------------------|
@@ -149,7 +133,7 @@ Servos 0, 1, 4, and 7 are direction-inverted by default.
 
 ---
 
-## 📐 Command Format
+## Command Format
 
 Each command is 7 bits:
 
@@ -167,7 +151,7 @@ Examples:
 
 ---
 
-## 🔁 Modes Explained
+## Modes Explained
 
 ### 1. WEIGHT Mode
 
@@ -195,7 +179,7 @@ Examples:
 
 ---
 
-## 🧪 Trigger Sequence (Serial2)
+## Trigger Sequence (Serial2)
 
 When pin 11 transitions from LOW to HIGH, a predefined sequence is sent over `Serial2`:
 
@@ -209,11 +193,76 @@ When pin 11 transitions from LOW to HIGH, a predefined sequence is sent over `Se
 
 ---
 
-## 🔭 Future Work
+## 8. User Interface & Software Stack
 
-- Higher-precision weight control with better motors
-- Larger scale for better control and visualisation
-- LEDs to show neuron activations
+**display.py (GUI):**
+
+* Touchscreen-based chatbot
+* Accepts logic expressions like `A XOR B`
+* Calls `weights_parser.py` to simplify logic
+* Loads corresponding weight preset and sends to Arduino via `uart_comm.py`
+
+**weights\_parser.py:**
+
+* Simplifies logic using Boolean algebra
+* Maps user intent to one of 16 preset logical functions
+
+**uart\_comm.py:**
+
+* Encodes 7-bit messages for servo control
+* Sends commands via UART to the Arduino Due
+
+---
+
+## 9. Logic Function Modelling
+
+With 2 binary inputs, EMNN can model all **16 possible logical functions** (`2^4`):
+
+* Input combinations: `00`, `01`, `10`, `11`
+* Output: `0` or `1` per input state
+* Preset weights stored and applied based on simplified Boolean logic
+
+Examples:
+
+* AND
+* OR
+* XOR
+* NAND
+* NOR
+* Constant TRUE or FALSE
+
+---
+
+## 10. Design Decisions
+
+| Decision                              | Rationale                                                            |
+| ------------------------------------- | -------------------------------------------------------------------- |
+| Physical system instead of simulation | Boosts engagement, makes learning interactive                        |
+| Time-based motor control              | Avoids complexity of encoders, keeps cost low                        |
+| Acrylic parts                         | Lightweight enough for neuron levers without interfering with motion |
+| DoReLU function                       | Compatible with physical constraints, yet supports non-linearity     |
+| Two-layer MLP                         | Minimal yet expressive enough to model all 2-input logic functions   |
+
+---
+
+## 11. Meeting Records & Rationales
+
+*This section is a placeholder for project documentation:*
+
+* Key decisions made during development
+* Design trade-offs and discussion outcomes
+* Weekly goals and integration notes
+* Hardware/software bottlenecks and how they were resolved
+
+---
+
+## 12. Future Improvements
+
+* Finer motor control using encoders or stepper motors
+* Multi-output layer for more complex logic (e.g., 2-bit outputs)
+* Visual LED/GUI representation of neuron states
+* Regression mode for real-valued input/output demonstration 
+* Larger scale for better control and visualisation
 
 ---
 
@@ -221,11 +270,14 @@ When pin 11 transitions from LOW to HIGH, a predefined sequence is sent over `Se
 
 We are seven third-year EEE/EIE students at Imperial College London, in collaboration with IBM:
 
-- Sriyesh Bogadapati
-- Benjamin De Vos
-- Archisha Garg
-- Arjan Hayre
-- Zian Lin
-- Conrad Perry
-- Letong Xu
-  
+* Sriyesh Bogadapati
+* Benjamin De Vos
+* Archisha Garg
+* Arjan Hayre
+* Zian Lin
+* Conrad Perry
+* Letong Xu
+
+> *“Forget the code. Come play with intelligence.”*
+
+
