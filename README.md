@@ -13,7 +13,7 @@ This is built via 3d printer and incorporate levers, which represent the neurons
 
 - [1. Project Overview](#1-project-overview)
 - [2. Specifications & Architecture](#2-specifications--architecture)
-- [3. Materials ](#3-materials-used)
+- [3. Materials ](#3-materials)
 - [4. Pulley & Lever Computation](#4-pulley--lever-computation)
 - [5. Motor Weight Adjustment](#5-motor-weight-adjustment)
 - [6. Embedded Control System](#6-embedded-control-system)
