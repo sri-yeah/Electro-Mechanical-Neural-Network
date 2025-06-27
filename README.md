@@ -171,7 +171,7 @@ Examples:
 
 ---
 
-## ⏱ Timing and Direction
+## Timing and Direction
 
 - `ROTATION_TIME_UNIT = 1100 ms` per position step
 - `PWM_CW = 80`, `PWM_STOP = 90`, `PWM_CCW = 100`
