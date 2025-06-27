@@ -260,11 +260,11 @@ Examples:
 
 ## 12. Future Improvements
 
-* Finer motor control using encoders or stepper motors
-* Multi-output layer for more complex logic (e.g., 2-bit outputs)
-* Visual LED/GUI representation of neuron states
+* Larger scale for better control and visualisation 
+* Finer motor control using optical encoders or stepper motors 
+* Visual LED/GUI representation of neuron states 
+* Multi-output layer for more complex logic (e.g., 2-bit outputs) 
 * Regression mode for real-valued input/output demonstration 
-* Larger scale for better control and visualisation
 
 ---
 
